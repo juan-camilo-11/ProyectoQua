@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('pruebas', function (Blueprint $table) {
             $table->id();
             $table->string('descripcion');
+            $table->string('codigo');
             $table->text('pasos');
             $table->string('resultadoEsperado');
             $table->string('estado')->default('Asignada');
@@ -22,6 +23,9 @@ return new class extends Migration
             // Relacion con requisitosFuncionales
             $table->unsignedBigInteger('requisito_id');
             $table->foreign('requisito_id')->references('id')->on('requisitos_funcionales');
+            // Relacion con usuarios
+            $table->unsignedBigInteger('usuario_id');
+            $table->foreign('usuario_id')->references('id')->on('users');
             $table->timestamps();
         });
     }

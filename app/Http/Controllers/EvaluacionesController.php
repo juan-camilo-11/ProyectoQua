@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Evaluaciones;
 use App\Models\Pruebas;
+use App\Models\Proyectos;
 use Illuminate\Http\Request;
 
 class EvaluacionesController extends Controller
@@ -14,6 +15,28 @@ class EvaluacionesController extends Controller
     public function index()
     {
         //
+        try {
+            $id = decrypt($_REQUEST['proyecto']);
+            $proyecto = Proyectos::where('id', $id)->with('criterios.requisitosFuncionales.pruebas.evaluacion')->first();
+            $evaluaciones = [];
+                foreach ($proyecto->criterios as $criterio) {
+                    foreach ($criterio->requisitosFuncionales as $requisito) {
+                        foreach ($requisito->pruebas as $prueba) {
+                            if ($prueba->evaluacion) {
+                                $evaluaciones[] = $prueba->evaluacion;
+                            }
+                        }
+                    }
+                }
+                $pruebas =  $proyecto->criterios->flatMap(function ($criterio){
+                    return $criterio->requisitosFuncionales->flatMap(function ($requisito){
+                        return $requisito->pruebas;
+                    });
+                });
+            return view('evaluaciones.index', ['evaluaciones' => $evaluaciones,'pruebas' => $pruebas]);
+        } catch (\Exception $e) {
+            return redirect()->route('proyectos.index')->with('error', 'Error: ' . $e->getMessage());
+        }
     }
 
     /**

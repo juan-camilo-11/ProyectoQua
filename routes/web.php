@@ -6,6 +6,9 @@ use App\Http\Controllers\CriteriosController;
 use App\Http\Controllers\EvaluacionesController;
 use App\Http\Controllers\PruebasController;
 use App\Http\Controllers\ReqFuncionalesController;
+use App\Http\Controllers\UsuariosController;
+use App\Http\Controllers\SeguimientoController;
+use App\Http\Controllers\ExportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,6 +36,10 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('requisitos', ReqFuncionalesController::class);
     Route::resource('pruebas', PruebasController::class);
     Route::resource('evaluaciones', EvaluacionesController::class);
+    Route::resource('usuarios', UsuariosController::class);
+    Route::resource('seguimiento', SeguimientoController::class);
+    Route::post('/cambiar-contrasena', [UsuariosController::class, 'cambiarContrasena'])->name('cambiar-contrasena');
+    Route::get('/exportar/{id}', [ExportController::class, 'export'])->name('exportar');
 });
 
 Auth::routes();

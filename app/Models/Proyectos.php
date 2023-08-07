@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
 use App\Models\Criterios;
+use App\Models\Pruebas;
 
 class Proyectos extends Model
 {
@@ -20,6 +21,8 @@ class Proyectos extends Model
     {
         return $this->hasMany(Criterios::class, 'proyecto_id');
     }
-    
-
+    public function pruebas()
+    {
+        return $this->hasMany(Pruebas::class);
+    }
 }

@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Exports\ProyectoExport;
+use App\Models\Proyectos;
+use Maatwebsite\Excel\Facades\Excel;
 
-class CargosController extends Controller
+class ExportController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -60,5 +63,12 @@ class CargosController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function export($id)
+    {
+
+
+        return Excel::download(new ProyectoExport($id), 'proyecto_' . $id . '.xlsx');
     }
 }

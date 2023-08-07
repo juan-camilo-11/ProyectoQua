@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Criterios;
 use App\Models\Proyectos;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class CriteriosController extends Controller
 {
@@ -42,6 +43,9 @@ class CriteriosController extends Controller
         {
             //DB::beginTransaction(); // Iniciar la transacción a la base de datos
             try {
+                $proyecto_id = decrypt($request->proyecto_id); // Desciframos el id del proyecto
+
+
                 $requestData = $request->except(['_token', 'proyecto_id']);
                 // Validamos al menos una seleccion
                 if (empty($requestData)) {
@@ -63,13 +67,19 @@ class CriteriosController extends Controller
                     $valores = array_values($ponderaciones); // Tomamos los valores 
 
                     $suma = array_sum($valores); // Sumamos los valores
+                    //Obtenemos el total de las ponderaciones que ya existen
+                    $resultado = DB::select('CALL calcular_suma_ponderaciones(?, @resultado)', [$proyecto_id]);
+                    $totalPonderaciones = DB::select('SELECT @resultado AS total_ponderaciones')[0]->total_ponderaciones;
+
+
                     if ($suma > 100) {
                         throw new \Exception("Los valores son superiores a 100");
+                    }elseif($totalPonderaciones + $suma > 100) {
+                        throw new \Exception("No se puede exceder de 100");
                     }
+
                 }
 
-
-                $proyecto_id = decrypt($request->proyecto_id); // Desciframos el id del proyecto
                 // Validar informacion del formulario
                 
                 $request->validate([
@@ -106,7 +116,7 @@ class CriteriosController extends Controller
                 // Verificar si el campo c_funcionalidad está presente en la solicitud
                 if ($request->has('c_funcionalidad')) {
                     $criterio = new Criterios;
-                    $criterio->nombre = 'funcionalidad';
+                    $criterio->nombre = 'Funcionalidad';
                     $criterio->ponderacion = $request->input('p_funcionalidad');
                     $criterio->proyecto_id = $proyecto_id;
                     $criterio->save();
@@ -115,7 +125,7 @@ class CriteriosController extends Controller
                 // Verificar si el campo c_eficiencia está presente en la solicitud
                 if ($request->has('c_eficiencia')) {
                     $criterio = new Criterios;
-                    $criterio->nombre = 'eficiencia';
+                    $criterio->nombre = 'Eficiencia';
                     $criterio->ponderacion = $request->input('p_eficiencia');
                     $criterio->proyecto_id = $proyecto_id;
                     $criterio->save();
@@ -124,7 +134,7 @@ class CriteriosController extends Controller
                 // Verificar si el campo c_compatibilidad está presente en la solicitud
                 if ($request->has('c_compatibilidad')) {
                     $criterio = new Criterios;
-                    $criterio->nombre = 'compatibilidad';
+                    $criterio->nombre = 'Compatibilidad';
                     $criterio->ponderacion = $request->input('p_compatibilidad');
                     $criterio->proyecto_id = $proyecto_id;
                     $criterio->save();
@@ -133,7 +143,7 @@ class CriteriosController extends Controller
                 // Verificar si el campo c_usabilidad está presente en la solicitud
                 if ($request->has('c_usabilidad')) {
                     $criterio = new Criterios;
-                    $criterio->nombre = 'usabilidad';
+                    $criterio->nombre = 'Usabilidad';
                     $criterio->ponderacion = $request->input('p_usabilidad');
                     $criterio->proyecto_id = $proyecto_id;
                     $criterio->save();
@@ -151,7 +161,7 @@ class CriteriosController extends Controller
                 // Verificar si el campo c_seguridad está presente en la solicitud
                 if ($request->has('c_seguridad')) {
                     $criterio = new Criterios;
-                    $criterio->nombre = 'seguridad';
+                    $criterio->nombre = 'Seguridad';
                     $criterio->ponderacion = $request->input('p_seguridad');
                     $criterio->proyecto_id = $proyecto_id;
                     $criterio->save();
@@ -160,7 +170,7 @@ class CriteriosController extends Controller
                 // Verificar si el campo c_mantenibilidad está presente en la solicitud
                 if ($request->has('c_mantenibilidad')) {
                     $criterio = new Criterios;
-                    $criterio->nombre = 'mantenibilidad';
+                    $criterio->nombre = 'Mantenibilidad';
                     $criterio->ponderacion = $request->input('p_mantenibilidad');
                     $criterio->proyecto_id = $proyecto_id;
                     $criterio->save();
@@ -169,7 +179,7 @@ class CriteriosController extends Controller
                 // Verificar si el campo c_portabilidad está presente en la solicitud
                 if ($request->has('c_portabilidad')) {
                     $criterio = new Criterios;
-                    $criterio->nombre = 'portabilidad';
+                    $criterio->nombre = 'Portabilidad';
                     $criterio->ponderacion = $request->input('p_portabilidad');
                     $criterio->proyecto_id = $proyecto_id;
                     $criterio->save();

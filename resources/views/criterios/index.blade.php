@@ -2,12 +2,13 @@
 
 @section('content-nav')
 <button onclick="window.history.back()" class="btn btn-gris"><i class="bi bi-arrow-left"></i></button>
+
 <div class="row">
     <h3 class="my-2">Asignar Criterios</h3>
     <p>La suma de todos los seleccionados no puede ser superior a 100</p>
     <form action="{{route('criterios.store')}}" method="post">
         @csrf
-        <input type="text" name="proyecto_id" value="{{$_REQUEST['proyecto']}}" style="display: none;">
+        <input type="text" name="proyecto_id" value="{{$_REQUEST['proyecto']}}" style="display: none;"/>
         <div class="col">
             <div class="form-check w-100 d-flex justify-content-between">
                 <input class="form-check-input" type="checkbox" id="mi-checkbox" name="c_funcionalidad" value="funcionalidad">

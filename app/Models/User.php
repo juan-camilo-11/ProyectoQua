@@ -9,6 +9,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 use Spatie\Permission\Models\Role;
+use App\Models\Proyectos;
 
 class User extends Authenticatable
 {
@@ -49,7 +50,7 @@ class User extends Authenticatable
 
     public function proyectos()
     {
-        return $this->belongsToMany(Proyecto::class, 'proyectos_tienen_usuarios', 'usuario_id', 'proyecto_id')->withPivot('cargo_id');
+        return $this->belongsToMany(Proyectos::class, 'proyectos_tienen_usuarios', 'usuario_id', 'proyecto_id')->withPivot('cargo_id');
     }
     
 

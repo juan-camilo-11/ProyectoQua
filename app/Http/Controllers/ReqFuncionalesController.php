@@ -18,7 +18,7 @@ class ReqFuncionalesController extends Controller
             $id = decrypt($_REQUEST['proyecto']);
             $proyecto = Proyectos::findOrFail($id);
             $criterios = $proyecto->criterios; // Obtenemos los criterios asociados al proyecto
-
+            $usuarios = $proyecto->usuarios; // Obtenemos los usuarios asociados al proyecto
             $criterios_id = [];
             foreach(json_decode($criterios, true) as $criterio) { // Guardamos los id
                 $criterios_id[] = $criterio['id'];
@@ -26,7 +26,7 @@ class ReqFuncionalesController extends Controller
             
             $requisitos = RequisitosFuncionales::whereIn('criterio_id', $criterios_id)->paginate(10); // Obtenemos losrequisitos con criterio_id sea igual a los criterios asociados al proyecto
 
-            return view('requisitos.index', ['criterios' => $criterios], ['requisitos' => $requisitos]);
+            return view('requisitos.index', ['criterios' => $criterios, 'requisitos' => $requisitos, 'usuarios' => $usuarios]);
         } catch (\Exception $e) {
             return redirect()->route('proyectos.index')->with('error', 'Error: ' . $e->getMessage());
         }

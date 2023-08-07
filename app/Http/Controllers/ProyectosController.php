@@ -26,7 +26,6 @@ class ProyectosController extends Controller
         })->with(['usuarios' => function ($query) use ($user) {
             $query->where('usuario_id', $user->id)->select('cargo_id');
         }])->orderBy('nombre')->paginate(10);
-        //dd($proyectos);
         return view('proyectos.index', ['proyectos' => $proyectos]);
     }
 
@@ -49,11 +48,13 @@ class ProyectosController extends Controller
             $request->validate([
                 'nombre' => 'required|min:3|unique:proyectos',
                 'objetivo' => 'required|min:3',
+                'fechaFin' => 'required',
             ]);
             // Guardar informacion del formulario
             $proyecto = new proyectos;
             $proyecto->nombre = $request->nombre;
             $proyecto->objetivo = $request->objetivo;
+            $proyecto->fechaFin = $request->fechaFin;
             $proyecto->save();
             $usuario_id = $request->usuario_id;
             $cargo_id = "Scrum Master";
@@ -126,7 +127,15 @@ class ProyectosController extends Controller
                 break;
             }
         }
-        return view('proyectos.show', ['proyecto' => $proyecto, 'usuarios' => $usuarios, 'cargo' => $cargo]);
+         // Obtener los resultados de los criterios
+        $progresoCriterios = [];
+        // Agregar el progreso de cada criterio
+        $criterios = $proyecto->criterios;
+        foreach ($criterios as $criterio) {
+            $resultadoCriterio = $this->obtenerProgresoCriterio($criterio->id);
+            $criterio->progreso = $resultadoCriterio;
+        }
+        return view('proyectos.show', ['proyecto' => $proyecto, 'usuarios' => $usuarios, 'cargo' => $cargo, 'criterios' => $criterios]);
 
     }
 
@@ -153,4 +162,12 @@ class ProyectosController extends Controller
     {
         //
     }
+    // Funcion para mostrar el progreso de un criterio
+    public static function obtenerProgresoCriterio($idCriterio) {
+        $results = DB::select('CALL progreso_de_calidad_del_proyecto(?, @resultadoAprobado, @resultadoAsignado, @resultadoNo)', [$idCriterio]);
+        // Obtener los resultados desde las variables de sesión
+        $progreso = DB::select('SELECT @resultadoAprobado AS ResultadoAprobado, @resultadoAsignado AS ResultadoAsignado, @resultadoNo AS ResultadoNo');
+        return $progreso[0]; // Devolver el resultado como un objeto o arreglo
+    }
+    
 }

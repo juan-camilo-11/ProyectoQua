@@ -28,7 +28,13 @@
                             <label for="objetivo">Objetivo del proyecto:</label>
                             <textarea name="objetivo" id="objetivo" class="form-control" rows="3" required></textarea>
                         </div>
+                        <div class="form-group">
+                        <label for="fechaFin">Fecha de Finalizacion:</label>
+                        <input type="date" class="form-control" id="fechaFin" name="fechaFin" min="{{ date('Y-m-d') }}">
+                        </div>  
                     </div>
+                    
+                    
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                         <button type="submit" class="btn btn-primary">Crear</button>
@@ -56,6 +62,7 @@
         <tr>
             <th>Nombre</th>
             <th>Estado</th>
+            <th>Finalizacion</th>
             <th>Cargo</th>
         </tr>
     </thead>
@@ -64,11 +71,13 @@
         <tr>
             <td><a href="{{route('proyectos.show', $proyecto->id)}}" class="proyecto-nombre">{{$proyecto->nombre}}</a></td>
             <td class="estado {{ $proyecto->estado == 'Activo' ? 'activo' : 'cerrado' }}"><span>{{$proyecto->estado}}</span></td>
+            <td>{{$proyecto->fechaFin}}</td>
             <td>{{$proyecto->usuarios->first()->cargo_id  }}</td>
         </tr>
         @endforeach
    </tbody>
 </table>
+{{$proyectos->links()}}
 
 
 @endsection

@@ -1,47 +1,50 @@
 @extends('layouts.nav')
 
 @section('content-nav')
-<h3>{{ $mensaje }}, {{ auth()->user()->nombre }}!</h3>
-<div class="row">
-    <div class="col">
-
-        <div class="card">
-            <i class="bi bi-circle-square text-end"></i>
-            <div class="card-body">
-                <h5 class="card-title">Pruebas Asignadas</h5>
-                <p class="card-text">25.</p>
-                <a href="#" class="btn btn-primary">Ver</a>
+<h3 class="my-2">{{ $mensaje }}, {{ auth()->user()->nombre }}!</h3>
+<div class="row cards-dash my-4">
+    <div class="col card-dashboard">
+        <div class="row d-flex align-items-center">
+            <div class="col-2 d-flex justify-content-center">
+                <span class="span-warning">
+                    <i class="bi bi-dash"></i>
+                </span>
+            </div>
+            <div class="col-10">
+                <h6 class="card-title">Pruebas Asignadas</h6>
+                <p class="card-text">{{$PruebasAsignadas}}</p>
             </div>
         </div>
-
-
     </div>
-    <div class="col">
-
-        <div class="card">
-            <i class="bi bi-check2 text-end"></i>
-            <div class="card-body">
-                <h5 class="card-title">Pruebas Aprobadas</h5>
-                <p class="card-text">15.</p>
-                <a href="#" class="btn btn-primary">Ver</a>
+    <div class="col card-dashboard">
+        <div class="row d-flex align-items-center">
+            <div class="col-2 d-flex justify-content-center">
+                <span class="span-success">
+                    <i class="bi bi-check"></i>
+                </span>
+            </div>
+            <div class="col-8">
+                <h6 class="card-title">Pruebas Aprobadas</h6>
+                <p class="card-text">{{$PruebasAprobadas}}</p>
             </div>
         </div>
-
     </div>
-    <div class="col">
-
-        <div class="card">
-            <i class="bi bi-dash text-end"></i>
-            <div class="card-body">
-                <h5 class="card-title">Pruebas No aprobadas</h5>
-                <p class="card-text">10.</p>
-                <a href="#" class="btn btn-primary">Ver</a>
+    <div class="col card-dashboard">
+        <div class="row d-flex align-items-center">
+            <div class="col-2 d-flex justify-content-center">
+                <span class="span-danger">
+                <i class="bi bi-x"></i>
+                </span>
+            </div>
+            <div class="col-8">
+                <h6 class="card-title">Pruebas No Aprobadas</h6>
+                <p class="card-text">{{$PruebasNoAprobadas}}</p>
             </div>
         </div>
 
     </div>
 </div>
-<div class="row">
+<div class="row my-4">
     <div class="col">
         <table class="table">
             <thead>
@@ -49,33 +52,21 @@
                     <th>Proyecto</th>
                     <th>Estado</th>
                     <th>Avance</th>
-                    <th>Calidad</th>
                 </tr>
             </thead>
             <tbody>
+            @foreach ($proyectos as $proyecto)
                 <tr>
-                    <td>Proyecto 1</td>
-                    <td><span class="badge bg-success">Aprobado</span></td>
-                    <td>70%</td>
-                    <td>40%</td>
+                    <td>{{ $proyecto->nombre }}</td>
+                    <td><span class="badge bg-success">{{$proyecto->estado}}</span></td>
+                    <td>{{$proyecto->avance}}%</td>
                 </tr>
-                <tr>
-                    <td>Proyecto 2</td>
-                    <td><span class="badge bg-danger">No Aprobado</span></td>
-                    <td>40%</td>
-                    <td>40%</td>
-                </tr>
-                <tr>
-                    <td>Proyecto 3</td>
-                    <td><span class="badge bg-warning text-dark">Asignado</span></td>
-                    <td>20%</td>
-                    <td>40%</td>
-                </tr>
+                @endforeach
             </tbody>
         </table>
-
+        {{ $proyectos->links() }}
     </div>
-    <div class="col-4">
+    <div class="col">
         <h3>Calendario</h3>
         <table>
             <caption>Mayo 2023</caption>

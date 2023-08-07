@@ -4,10 +4,10 @@
 <div class="row contenido">
     <div class="col-2 nav" style="min-height: 100vh;">
         <nav class="w-100 navegacion d-flex flex-column justify-content-around">
-            <a href="" class="logo">
+            <a href="{{ route('home') }}" class="logo">
                 <img src="{{ asset('img/logo-blanco.svg') }}" alt="">
             </a>
-            <a href="" class="btn-user"><i class="bi bi-person"></i><span> {{ auth()->user()->nombre }} {{ auth()->user()->apellido }}</span></a>
+            <a href="{{route('usuarios.show',auth()->user()->id)}}" class="btn-user d-flex justify-content-center"><i class="bi bi-person"></i><span> {{ auth()->user()->nombre }} {{ auth()->user()->apellido }}</span></a>
             <ul class="d-flex flex-column align-items-center">
                 <li>
                     <a href="{{ route('home') }}" class="d-flex justify-content-center"><i class="bi bi-activity"></i><span>Dashboard</span> </a>

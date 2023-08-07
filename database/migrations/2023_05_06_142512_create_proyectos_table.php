@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('nombre');
             $table->string('objetivo');
+            $table->date('fechaFin');
             $table->string('estado')->default('Activo');
             $table->timestamps();
         });

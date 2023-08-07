@@ -1,6 +1,8 @@
 @extends('layouts.nav')
 
 @section('content-nav')
+
+
 <button onclick="window.history.back()" class="btn btn-gris"><i class="bi bi-arrow-left"></i></button>
 <div class="row">
   <div class="col">
@@ -34,7 +36,7 @@
               <label for="criterio">Criterio Asociado:</label>
               <select name="criterio_id" id="criterio" class="form-control">
                 @foreach ($criterios as $criterio)
-                <option value="{{ $criterio->id }}">{{ $criterio->Nombre }}</option>
+                <option value="{{ $criterio->id }}" style="text-transform: capitalize;">{{ $criterio->Nombre }}</option>
                 @endforeach
               </select>
             </div>
@@ -81,7 +83,7 @@
           </button>
           <!-- Modal para asignar prueba -->
           <div class="modal fade" id="asignarPrueba{{$requisito->id}}" tabindex="1" role="dialog" aria-labelledby="asignarPrueba{{$requisito->id}}" aria-hidden="true">
-            <div class="modal-dialog" role="document">
+            <div class="modal-dialog mx-auto" role="document">
               <div class="modal-content">
                 <div class="modal-header">
                   <h5 class="modal-title" id="modal-registrar-requisito-titulo">Asignar prueba</h5>
@@ -90,48 +92,67 @@
                 </div>
                 <div class="modal-body">
 
-                  <form action="{{route('pruebas.store')}}" method="POST">
+                  <form action="{{ route('pruebas.store') }}" method="POST" class="formulario">
                     @csrf
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label for="usuario">Responsable:</label>
+                          <select class="form-control" id="usuario" name="usuario_id">
+                            @foreach($usuarios as $usuario)
+                            <option value="{{$usuario->id}}">{{$usuario->nombre}}</option>
+                            @endforeach
+                          </select>
+                        </div>
 
-                    <div class="form-group">
-                      <label for="prioridad">Requisito Funcional:</label>
-                      <p>{{$requisito->Nombre}}</p>
-                      <input type="text" value="{{$requisito->id}}" name="requisito_id" style="display: none;">
-                    </div>
+                        <div class="form-group">
+                          <label for="prioridad">Requisito Funcional:</label>
+                          <p>{{$requisito->Nombre}}</p>
+                          <input type="hidden" value="{{$requisito->id}}" name="requisito_id">
+                        </div>
 
-                    <div class="form-group">
-                      <label for="descripcion">Descripción:</label>
-                      <textarea class="form-control" id="descripcion" name="descripcion" rows="2"></textarea>
-                    </div>
+                        <div class="form-group">
+                          <label for="descripcion">Descripción:</label>
+                          <textarea class="form-control" id="descripcion" name="descripcion" rows="2"></textarea>
+                        </div>
 
-                    <div class="form-group">
-                      <label for="pasos">Pasos:</label>
-                      <textarea class="form-control" id="pasos" name="pasos" rows="3"></textarea>
-                    </div>
+                        <div class="form-group">
+                          <label for="pasos">Pasos:</label>
+                          <textarea class="form-control" id="pasos" name="pasos" rows="3"></textarea>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="">Codigo</label>
+                            <br/>
+                            <input type="text" name="codigo">
+                          </div>
+                        <div class="form-group">
+                          <label for="resultadoEsperado">Resultado esperado:</label>
+                          <textarea class="form-control" id="resultadoEsperado" name="resultadoEsperado" rows="2"></textarea>
+                        </div>
 
-                    <div class="form-group">
-                      <label for="resultadoEsperado">Resultado esperado:</label>
-                      <textarea class="form-control" id="resultadoEsperado" name="resultadoEsperado" rows="2"></textarea>
+                        <div class="form-group">
+                          <label for="prioridad_fecha">Prioridad y Fecha de entrega</label>
+                          <div class="input-group">
+                            <select class="form-control select-prioridad" name="prioridad">
+                              <option value="alta">Alta</option>
+                              <option value="media">Media</option>
+                              <option value="baja">Baja</option>
+                            </select>
+                            <input type="date" class="form-control" name="fechaEntrega" min="{{ date('Y-m-d') }}">
+                          </div>
+                        </div>
+                      </div>
                     </div>
+                    <div class="modal-footer">
+                      <button type="submit" class="btn btn-primary">Guardar</button>
+                    </div>
+                  </form>
 
-                    <label for="prioridad_fecha">Prioridad y Fecha de entrega</label>
-                    <div class="input-group">
-                      <select class="form-control" name="prioridad">
-                        <option value="alta">Alta</option>
-                        <option value="media">Media</option>
-                        <option value="baja">Baja</option>
-                      </select>
-                      <input type="date" class="form-control" name="fechaEntrega" min="{{ date('Y-m-d') }}">
-                    </div>
+
                 </div>
-                <div class="modal-footer">
-                  <button type="submit" class="btn btn-primary">Guardar</button>
-                </div>
-
-                </form>
-
               </div>
-              < </div>
             </div>
           </div><!-- Modal Asignar prueba -->
 
@@ -162,7 +183,7 @@
                       <label for="criterio">Criterio Asociado:</label>
                       <select name="criterio_id" id="criterio" class="form-control">
                         @foreach($criterios as $criterio)
-                        <option value="{{ $criterio->id }}" @if($requisito->criterio->id == $criterio->id) selected @endif>{{ $criterio->Nombre }}</option>
+                        <option style="text-transform: capitalize;" value="{{ $criterio->id }}" @if($requisito->criterio->id == $criterio->id) selected @endif>{{ $criterio->Nombre }}</option>
                         @endforeach
                       </select>
                     </div>
