@@ -1,6 +1,8 @@
 @extends('layouts.nav')
 
 @section('content-nav')
+<a href="{{ route('proyectos.show', decrypt($_REQUEST['proyecto'])) }}" class="btn btn-gris"><i class="bi bi-arrow-left"></i></a>
+
 <h2>Seguimiento</h2>
 <h6>{{$proyecto->nombre}}</h6>
 

@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProyectosController;
+use App\Http\Controllers\CalendarioController;
 use App\Http\Controllers\CriteriosController;
 use App\Http\Controllers\EvaluacionesController;
 use App\Http\Controllers\PruebasController;
@@ -32,6 +33,7 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('proyectos', ProyectosController::class);
     Route::get('/logout', '\App\Http\Controllers\Auth\LoginController@logout');
     Route::post('/proyectos/agregar-miembro', [ProyectosController::class, 'agregarMiembroProyecto'])->name('proyectos.agregar-miembro');
+    Route::resource('calendario', CalendarioController::class);
     Route::resource('criterios', CriteriosController::class);
     Route::resource('requisitos', ReqFuncionalesController::class);
     Route::resource('pruebas', PruebasController::class);

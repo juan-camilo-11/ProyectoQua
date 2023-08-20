@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use App\Models\User;
+use App\Notifications\CuentaCreada;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -66,13 +67,27 @@ class RegisterController extends Controller
      * @return \App\Models\User
      */
     protected function create(array $data)
-    {
-        return User::create([
+{
+    try {
+        $user = User::create([
             'nombre' => $data['nombre'],
             'apellido' => $data['apellido'],
             'telefono' => $data['telefono'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
-        ])->assignRole('cliente');
+        ]);
+
+        // Asigna el rol 'cliente'
+        $user->assignRole('cliente');
+
+        // Envía el correo electrónico
+        $user->notify(new CuentaCreada($user->email));
+
+        return $user;
+    } catch (\Exception $e) {
+        // Manejar la excepción aquí
+        return back()->withInput()->withErrors(['error' => 'Error al crear la cuenta']);
     }
+}
+
 }

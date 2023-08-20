@@ -619,3 +619,27 @@ input[type="checkbox"] {
   background-color: var(--color-gris);
   
 }
+/* Calendario */
+
+#calendar {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    text-decoration: none;
+  }
+#calendar thead {
+    background-color: var(--color-gris);
+}
+#calendar thead a{
+    color: var(--color-blanco);
+    text-decoration: none;
+}
+#calendar .fc-button-group button{
+    background-color: var(--color-gris);
+}
+#calendar .fc-daygrid-day-top a{
+    text-decoration: none;
+}
+  

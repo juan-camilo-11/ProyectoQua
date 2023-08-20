@@ -91,11 +91,25 @@ class PruebasController extends Controller
     {
         // 
         try {
+            $id = $request->id;
+            $proyecto_p = Proyectos::where('id', $id)->with('criterios.requisitosFuncionales.pruebas')->first();
+        
+
+            $pruebas =  $proyecto_p->criterios->flatMap(function ($criterio) {
+                return $criterio->requisitosFuncionales->flatMap(function ($requisito) {
+                    return $requisito->pruebas;
+                });
+            });
+            foreach ($pruebas as $prueba) {
+                if($prueba->codigo == $request->codigo){
+                    throw new \Exception("Codigo ya existente");
+                }
+            }
             // Validar informacion del formulario
             $request->validate([
                 'descripcion' => 'required|min:10',
                 'pasos' => 'required|min:10',
-                'codigo' => 'required|min:4|unique:pruebas,codigo',
+                'codigo' => 'required|min:4',
                 'resultadoEsperado' => 'required|min:10',
                 'prioridad' => 'required',
                 'fechaEntrega' => 'required',

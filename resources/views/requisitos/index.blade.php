@@ -3,7 +3,8 @@
 @section('content-nav')
 
 
-<button onclick="window.history.back()" class="btn btn-gris"><i class="bi bi-arrow-left"></i></button>
+<a href="{{ route('proyectos.show', decrypt($_REQUEST['proyecto'])) }}" class="btn btn-gris"><i class="bi bi-arrow-left"></i></a>
+
 <div class="row">
   <div class="col">
     <h2 class="my-5">Requisitos Funcionales</h2>

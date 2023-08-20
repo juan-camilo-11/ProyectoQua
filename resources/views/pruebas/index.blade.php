@@ -1,7 +1,8 @@
 @extends('layouts.nav')
 
 @section('content-nav')
-<button onclick="window.history.back()" class="btn btn-gris"><i class="bi bi-arrow-left"></i></button>
+<a href="{{ route('proyectos.show', decrypt($_REQUEST['proyecto'])) }}" class="btn btn-gris"><i class="bi bi-arrow-left"></i></a>
+
 <div class="row">
     <div class="col">
         <h2 class="my-3">Pruebas</h2>
@@ -26,6 +27,7 @@
             <div class="modal-body">
                 <form action="{{ route('pruebas.store') }}" method="POST">
                     @csrf
+                    <input type="hidden" name="id" value="{{ decrypt($_REQUEST['proyecto']) }}">
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
