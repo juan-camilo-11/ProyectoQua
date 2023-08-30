@@ -107,6 +107,7 @@ class PruebasController extends Controller
             }
             // Validar informacion del formulario
             $request->validate([
+                'tipo' => 'required',
                 'descripcion' => 'required|min:10',
                 'pasos' => 'required|min:10',
                 'codigo' => 'required|min:4',
@@ -118,6 +119,7 @@ class PruebasController extends Controller
             ]);
             // Guardar informacion del formulario
             $prueba = new Pruebas;
+            $prueba->tipo = $request->tipo;
             $prueba->descripcion = $request->descripcion;
             $prueba->pasos = $request->pasos;
             $prueba->codigo = $request->codigo;

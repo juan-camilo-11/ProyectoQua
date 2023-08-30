@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('pruebas', function (Blueprint $table) {
             $table->id();
+            $table->string('Tipo');
             $table->string('descripcion');
             $table->string('codigo');
             $table->text('pasos');

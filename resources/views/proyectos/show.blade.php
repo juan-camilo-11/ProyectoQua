@@ -86,6 +86,7 @@
         <li>
         <a href="{{route('seguimiento.index',['proyecto' => encrypt($proyecto->id)])}}" class="my-2">Seguimiento</a>
         </li>
+        
     </ul>
    </div>
 </div>
@@ -191,7 +192,7 @@
 
             <tr>
                 <td>{{$usuario->nombre}}</td>
-                <td class="estado {{ $usuario->estado == 'activo' ? 'activo' : 'cerrado' }}"><span>{{$usuario->estado}}</span></td>
+                <td class="estado {{ $usuario->estado == 'Activo' ? 'activo' : 'cerrado' }}"><span>{{$usuario->estado}}</span></td>
                 <td>{{$usuario->pivot->cargo_id}}</td>
                 @if($cargo == "Scrum Master")
                 <td>Eliminar</td>

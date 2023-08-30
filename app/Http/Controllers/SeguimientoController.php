@@ -6,7 +6,9 @@ use Illuminate\Http\Request;
 use App\Models\Proyectos;
 use App\Models\Pruebas;
 use App\Models\RequisitosFuncionales;
+use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\View;
 
 class SeguimientoController extends Controller
 {
@@ -34,7 +36,35 @@ class SeguimientoController extends Controller
             return redirect()->route('seguimiento.index')->with('error', 'Error: ' . $e->getMessage());
         }
     }
+    /**
+     * Metodo para pdf
+     */
+    public function prueba($Id)
+    {
+        //
+        try {
+            $pruebas = collect();  // Creamos una colecion para guardar las pruebas de este proyecto
+            $id = decrypt($Id); // Obtener el id del proyecto
+            $proyecto = Proyectos::findOrFail($id); // Buscamos el proyecto
+            $results = DB::select('CALL obtener_progreso_del_proyecto(?)', [$proyecto->id]);// Lammamos el procedimiento almacenado que devuelve la proyecto el progreso por criterio
+            $criteriosIds = collect($results)->pluck('id'); // Obtener los IDs de los criterios
+            $requisitos = RequisitosFuncionales::whereIn('criterio_id', $criteriosIds)->get(); // Obtener los requisitos relacionados
+            foreach ($requisitos as $requisito) { // Iteramos por los requisitos funcionales para traer las pruebas
+                $pruebasPorRequisito = Pruebas::where('requisito_id', $requisito->id)
+                    ->select('id', 'codigo', 'estado', 'prioridad')
+                    ->get();
+                    $pruebas = $pruebas->concat($pruebasPorRequisito); // Concatenar las pruebas a la colección principal
+            }
+            
+            $pdf = FacadePdf::loadView('seguimiento.pdf', ['proyecto' => $proyecto,'results' => $results, 'pruebas' => $pruebas]);
+            return $pdf->stream('seguimiento.pdf');
+        } catch (\Exception $e) {
 
+            return redirect()->route('proyectos.show', $id);
+        }
+        
+        
+    }
     /**
      * Show the form for creating a new resource.
      */

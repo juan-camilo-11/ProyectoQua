@@ -43,6 +43,7 @@ class CuentaCreada extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
+            ->subject('Registro Exitoso!')
             ->view('email.cuentaCreada', ['user' => $notifiable]);
     }
     /**

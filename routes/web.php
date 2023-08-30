@@ -42,6 +42,7 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('seguimiento', SeguimientoController::class);
     Route::post('/cambiar-contrasena', [UsuariosController::class, 'cambiarContrasena'])->name('cambiar-contrasena');
     Route::get('/exportar/{id}', [ExportController::class, 'export'])->name('exportar');
+    Route::get('/pdf/{id}', [SeguimientoController::class, 'prueba'])->name('pdf');
 });
 
 Auth::routes();

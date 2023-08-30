@@ -34,6 +34,13 @@
                                 <label for="codigo">Código:</label>
                                 <input type="text" class="form-control" id="codigo" name="codigo">
                             </div>
+                            <div class="form-group">
+                                <label for="tipo">Tipo de prueba:</label>
+                                <select class="form-control" id="tipo" name="tipo">
+                                    <option value="Integracion">Integracion</option>
+                                    <option value="Unitaria">Unitaria</option>
+                                </select>
+                            </div>
 
                             <div class="form-group">
                                 <label for="usuario">Responsable:</label>
@@ -65,6 +72,7 @@
                             </div>
                         </div>
                         <div class="col-md-6">
+
                             <div class="form-group">
                                 <label for="descripcion">Descripción:</label>
                                 <textarea class="form-control" id="descripcion" name="descripcion" rows="2"></textarea>
@@ -406,9 +414,9 @@
         <div class="card-header">
             <div class="row">
                 <div class="col">
-                    <h3 class="card-title">{{$prueba->codigo}}</h3>
+                    <h3 class="card-title">Codigo: {{$prueba->codigo}}</h3>
                     @foreach($requisitos as $requisito)
-                    <p> {{$prueba->requisito_id == $requisito->id ? $requisito->Nombre : ''}}</p>
+                    <p>Requisito: {{$prueba->requisito_id == $requisito->id ? $requisito->Nombre : ''}}</p>
                     @endforeach
                 </div>
                 <div class="col">
@@ -416,6 +424,7 @@
                     @if($prueba->usuario_id == $usuario->id)
                     <p>Responsable: {{$usuario->nombre}}</p>
                     @endif
+                    <p>Tipo de prueba: {{$prueba->Tipo}}</p>
                     @endforeach
                 </div>
 
@@ -500,7 +509,13 @@
                                             </div>
                                         </div>
                                         <div class="col-md-6">
-
+                                            <div class="form-group">
+                                                <label for="tipo">Tipo de prueba:</label>
+                                                <select class="form-control" id="tipo" name="tipo">
+                                                    <option value="Integracion">Integracion</option>
+                                                    <option value="Unitaria">Unitaria</option>
+                                                </select>
+                                            </div>
 
                                             <div class="form-group">
                                                 <label for="pasos">Pasos:</label>
