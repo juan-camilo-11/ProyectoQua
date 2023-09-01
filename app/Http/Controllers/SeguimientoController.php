@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Backlog;
 use Illuminate\Http\Request;
 use App\Models\Proyectos;
 use App\Models\Pruebas;
@@ -31,9 +32,28 @@ class SeguimientoController extends Controller
                     ->get();
                     $pruebas = $pruebas->concat($pruebasPorRequisito); // Concatenar las pruebas a la colección principal
             }
-           return view('seguimiento.index', ['proyecto' => $proyecto,'results' => $results, 'pruebas' => $pruebas]);
+           return view('reportes.index', ['proyecto' => $proyecto,'results' => $results, 'pruebas' => $pruebas]);
         } catch (\Exception $e) {
-            return redirect()->route('seguimiento.index')->with('error', 'Error: ' . $e->getMessage());
+            return redirect()->route('reportes.index')->with('error', 'Error: ' . $e->getMessage());
+        }
+    }
+    public function scrum()
+    {
+        //
+        try {
+            $id = decrypt($_REQUEST['proyecto']); // Obtener el id del proyecto
+            $registros = Backlog::where('proyecto_id', $id)->get();
+          
+            foreach ($registros as $registro){
+                $requisito = RequisitosFuncionales::find($registro->requisito_id);
+                $registro->requisito = $requisito; // Agregar el requisito al registro
+
+            }
+           
+           return view('seguimiento.index',['registros'=>$registros]);
+        } catch (\Exception $e) {
+            $id = decrypt($_REQUEST['proyecto']); // Obtener el id del proyecto
+            return redirect()->route('proyectos.show', $id);
         }
     }
     /**
@@ -56,8 +76,8 @@ class SeguimientoController extends Controller
                     $pruebas = $pruebas->concat($pruebasPorRequisito); // Concatenar las pruebas a la colección principal
             }
             
-            $pdf = FacadePdf::loadView('seguimiento.pdf', ['proyecto' => $proyecto,'results' => $results, 'pruebas' => $pruebas]);
-            return $pdf->stream('seguimiento.pdf');
+            $pdf = FacadePdf::loadView('reportes.pdf', ['proyecto' => $proyecto,'results' => $results, 'pruebas' => $pruebas]);
+            return $pdf->stream('reporte.pdf');
         } catch (\Exception $e) {
 
             return redirect()->route('proyectos.show', $id);

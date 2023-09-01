@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('resultadoEsperado');
             $table->string('estado')->default('Asignada');
             $table->string('prioridad');
-            $table->date('fechaEntrega');
+           $table->date('fechaEntrega')->nullable();
             // Relacion con requisitosFuncionales
             $table->unsignedBigInteger('requisito_id');
             $table->foreign('requisito_id')->references('id')->on('requisitos_funcionales');

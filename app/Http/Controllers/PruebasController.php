@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Proyectos;
 use App\Models\Pruebas;
+use App\Models\Daily;
 use App\Models\RequisitosFuncionales;
 
 class PruebasController extends Controller
@@ -129,7 +130,13 @@ class PruebasController extends Controller
             $prueba->requisito_id = $request->requisito_id;
             $prueba->usuario_id = $request->usuario_id;
             $prueba->save();
-
+            $daily = new Daily;
+            $daily->fecha = $request->fechaEntrega;
+            $daily->codigo = $request->codigo;
+            $daily->estado = 'En espera';
+            $daily->prueba_id = $prueba->id;
+            $daily->proyecto_id = $id;
+            $daily->save();
             return redirect()->back()->with('success', 'Prueba asiganda con exito');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Error al asignar prueba: ' . $e->getMessage());
@@ -169,6 +176,11 @@ class PruebasController extends Controller
             $prueba->fechaEntrega = $request->fechaEntrega;
             $prueba->requisito_id = $request->requisito_id;
             $prueba->save();
+            $daily = Daily::where('prueba_id', $id)->first();
+            if ($daily) {
+                $daily->codigo = $request->codigo;
+                $daily->save();
+            }
             return redirect()->back()->with('success', 'Pruebas actualizado correctamente.');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Ocurrió un error al actualizar la prueba: ' . $e->getMessage());
@@ -184,6 +196,8 @@ class PruebasController extends Controller
         try {
             $prueba = Pruebas::findOrFail($id);
             $prueba->delete();
+            // Buscar y eliminar el registro correspondiente en la tabla "Daily"
+            Daily::where('prueba_id', $id)->delete();
             return redirect()->back()->with('success', 'Prueba eliminado exitosamente.');
         } catch (\Throwable $th) {
             return back()->withErrors(['Error al eliminar la prueba.']);

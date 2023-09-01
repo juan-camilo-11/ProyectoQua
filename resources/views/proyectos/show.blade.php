@@ -84,7 +84,10 @@
         <a href="{{route('evaluaciones.index',['proyecto' => encrypt($proyecto->id)])}}" class="my-2">Evaluaciones</a>
         </li>
         <li>
-        <a href="{{route('seguimiento.index',['proyecto' => encrypt($proyecto->id)])}}" class="my-2">Seguimiento</a>
+        <a href="{{route('seguimiento.index',['proyecto' => encrypt($proyecto->id)])}}" class="my-2">Reportes</a>
+        </li>
+        <li>
+        <a href="{{route('scrum',['proyecto' => encrypt($proyecto->id)])}}" class="my-2">SCRUM</a>
         </li>
         
     </ul>

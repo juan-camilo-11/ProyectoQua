@@ -1,9 +1,11 @@
 <?php
 
+use App\Http\Controllers\BacklogController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProyectosController;
 use App\Http\Controllers\CalendarioController;
 use App\Http\Controllers\CriteriosController;
+use App\Http\Controllers\DailyController;
 use App\Http\Controllers\EvaluacionesController;
 use App\Http\Controllers\PruebasController;
 use App\Http\Controllers\ReqFuncionalesController;
@@ -39,10 +41,14 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('pruebas', PruebasController::class);
     Route::resource('evaluaciones', EvaluacionesController::class);
     Route::resource('usuarios', UsuariosController::class);
+    Route::resource('backlog', BacklogController::class);
+    Route::resource('daily', DailyController::class);
     Route::resource('seguimiento', SeguimientoController::class);
     Route::post('/cambiar-contrasena', [UsuariosController::class, 'cambiarContrasena'])->name('cambiar-contrasena');
     Route::get('/exportar/{id}', [ExportController::class, 'export'])->name('exportar');
     Route::get('/pdf/{id}', [SeguimientoController::class, 'prueba'])->name('pdf');
+    Route::get('/scrum', [SeguimientoController::class, 'scrum'])->name('scrum');
+    Route::post('/daily/cambiar-estado', [DailyController::class, 'actualizarEstado'])->name('actualizarEstado');
 });
 
 Auth::routes();
