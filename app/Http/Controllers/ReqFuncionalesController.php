@@ -24,8 +24,9 @@ class ReqFuncionalesController extends Controller
                 $criterios_id[] = $criterio['id'];
             }
             
-            $requisitos = RequisitosFuncionales::whereIn('criterio_id', $criterios_id)->paginate(10); // Obtenemos losrequisitos con criterio_id sea igual a los criterios asociados al proyecto
-
+            $requisitos = RequisitosFuncionales::whereIn('criterio_id', $criterios_id)->paginate(5); // Obtenemos losrequisitos con criterio_id sea igual a los criterios asociados al proyecto
+             
+            
             return view('requisitos.index', ['criterios' => $criterios, 'requisitos' => $requisitos, 'usuarios' => $usuarios]);
         } catch (\Exception $e) {
             return redirect()->route('proyectos.index')->with('error', 'Error: ' . $e->getMessage());

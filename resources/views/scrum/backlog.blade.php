@@ -13,24 +13,38 @@
 <div class="alert alert-danger" role="alert" id="errorAlert" style="display: none; margin: 1rem auto;">
     Ha ocurrido un error al procesar los datos
 </div>
+<div style="display: flex; justify-content: space-between; ">
+  
+    <h2>Backlog</h2>
+    
+    <button id="registrarBtn" class="btn btn-primary">Confirmar</button>
+ 
+</div>
 
-<h2>Backlog</h2>
-<button id="registrarBtn" class="btn btn-primary">Confirmar</button>
-<div class="container mt-5">
-    <h2>Lista de requisitos</h2>
+<div class="container mt-1">
+    <h4>Lista de requisitos</h4>
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-4">
             <ul id="lista" class="sortable-list" style="list-style: none; padding: 0;">
                 @foreach($requisitos as $requisito)
-                <li style="border: 1px solid #000; margin: 0.5rem auto; display:flex; justify-content:space-around; align-items:center">
-                    <p style="padding: 0.3rem; font-weight: bold;">ID: <span style="font-weight: normal;">{{$requisito->id}}</span></p>
-                    <p style="padding: 0.3rem; font-weight: bold;">Nombre: <span style="font-weight: normal;">{{$requisito->Nombre}}</span></p>
+                <li style="border: 1px solid #000; margin: 0.5rem auto; display:flex; justify-content:start; align-items:center">
+                    <p style="display:none">ID: <span style="font-weight: normal;">{{$requisito->id}}</span></p>
+                    <p style="padding: 0.2rem; font-weight: bold; margin:0">Nombre: <span style="font-weight: normal;">{{$requisito->Nombre}}</span></p>
                 </li>
                 @endforeach
             </ul>
         </div>
 
-        <div class="col-md-6">
+        <div class="col-md-8">
+    
+            @if($diasRestantes == 0)
+                <p>No hay dias restantes, ES HOY, ES HOY</p>
+            
+            @endif
+            @if($diasRestantes < 0)
+                <p>Te pasate de la fecha. Vas tarde!!</p>
+            
+            @endif
             @for ($i = 1; $i <= $diasRestantes; $i++)
                 <h3>Dia {{ $i }}</h3>
                 <ul id="lista{{ $i }}" class="sortable-list" data-dia="{{ $i }} " style="list-style: none; padding: 0;"></ul>

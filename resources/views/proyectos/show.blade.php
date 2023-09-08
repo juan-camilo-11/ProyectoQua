@@ -9,6 +9,10 @@
     </div>
     <!-- Botón de agregar miembro proyecto -->
     <div class="col d-flex align-items-center justify-content-end">
+    <a href="{{route('proyecto-edit',['id' => encrypt($proyecto->id)])}}" class="btn btn-outline-primary mx-2">
+            <i class="bi bi-eye"></i>
+        Proyecto</a>
+
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#crearProyectoModal">
             <i class="bi bi-plus"></i>
             Agregar Miembro
@@ -198,7 +202,15 @@
                 <td class="estado {{ $usuario->estado == 'Activo' ? 'activo' : 'cerrado' }}"><span>{{$usuario->estado}}</span></td>
                 <td>{{$usuario->pivot->cargo_id}}</td>
                 @if($cargo == "Scrum Master")
-                <td>Eliminar</td>
+                <td>
+                @if($uId != $usuario->id)
+                    <form method="POST" action="{{ route('eliminarUsuario', ['id' => $usuario->id]) }}">
+                        @csrf
+                        @method('DELETE')
+                        <button class="btn btn-danger" type="submit">Eliminar</button>
+                    </form>
+                @endif
+                </td>
                 @endif
             </tr>
             @endforeach

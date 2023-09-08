@@ -13,28 +13,30 @@
 <div class="alert alert-danger" role="alert" id="errorAlert" style="display: none; margin: 1rem auto;">
     Ha ocurrido un error al procesar los datos
 </div>
+<div style="display: flex; justify-content:space-between">
+    <h2>Daily</h2>
+    <button id="registrarBtn" class="btn btn-primary">Confirmar</button>
+</div>
 
-<h2>Daily</h2>
-<button id="registrarBtn" class="btn btn-primary">Confirmar</button>
 
 <div class="container">
-    <h2>Pruebas</h2>
-    <ul class="sortable-list">
+    <h4>Pruebas</h4>
+    <ul class="sortable-list" style="list-style: none;">
         
         @foreach($dailys->where('estado', 'En espera') as $daily)
-        <li data-id="{{$daily->id}}">{{$daily->codigo}}</li>
+            <li data-id="{{$daily->id}}" style="background-color: #aaa; margin: .2rem auto; text-align: center;">{{$daily->codigo}}</li>
         @endforeach
     </ul>
-    <h2>En proceso</h2>
-    <ul class="sortable-list en-proceso-list">
+    <h4>En proceso</h4>
+    <ul class="sortable-list en-proceso-list" style="list-style: none;">
         @foreach($dailys->where('estado', 'En proceso') as $daily)
-        <li data-id="{{$daily->id}}">{{$daily->codigo}}</li>
-        @endforeach
+        <li data-id="{{$daily->id}}" style="background-color: #3498DB ; margin: .2rem auto; text-align: center;">{{$daily->codigo}}</li>
+        @endforeach 
     </ul>
-    <h2>Terminado</h2>
-    <ul class="sortable-list terminado-list">
+    <h4>Terminado</h4>
+    <ul class="sortable-list terminado-list" style="list-style: none;">
         @foreach($dailys->where('estado', 'Terminado') as $daily)
-        <li data-id="{{$daily->id}}">{{$daily->codigo}}</li>
+        <li data-id="{{$daily->id}}" style="background-color: #2ECC71 ; margin: .2rem auto; text-align: center;">{{$daily->codigo}}</li>
         @endforeach
     </ul>
 </div>

@@ -78,82 +78,54 @@
         @endforeach
     </tbody>
 </table>
+
+
+
 <h1>Pruebas</h1>
-<p>Numero de prueba realizadas: 100</p>
+
 <div>
-    <h3>Funcionaldiad</h3>
-    <p>Tipo de prueba</p>
-    <table class="tabla-pdf">
-        <thead>
-            <tr>
-                <th>Codigo</th>
-                <th>Estado</th>
-                <th>Fecha de Entrega</th>
-                <th>Responsable</th>
-                <th>Prioridad</th>
-        
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($results as $result)
-                <tr>
-                    <td style="text-transform: capitalize; font-weight: bold;">{{ $result->nombre }}</td>
-                    <td>{{ $result->ponderacion }}%</td>
-                    <td>{{ $result->resultadoA }}%</td>
-                    <td>{{ $result->resultadoAs }}%</td>
-                    <td>{{ $result->resultadoNo }}%</td>
-                </tr>
-            @endforeach
-        </tbody>
-    </table>
-    <p>Tipo de prueba</p>
-    <table class="tabla-pdf">
-        <thead>
-            <tr>
-                <th>Codigo</th>
-                <th>Estado</th>
-                <th>Fecha de Entrega</th>
-                <th>Responsable</th>
-                <th>Prioridad</th>
-        
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($results as $result)
-                <tr>
-                    <td style="text-transform: capitalize; font-weight: bold;">{{ $result->nombre }}</td>
-                    <td>{{ $result->ponderacion }}%</td>
-                    <td>{{ $result->resultadoA }}%</td>
-                    <td>{{ $result->resultadoAs }}%</td>
-                    <td>{{ $result->resultadoNo }}%</td>
-                </tr>
-            @endforeach
-        </tbody>
-    </table>
-    <p>Tipo de prueba</p>
-    <table class="tabla-pdf">
-        <thead>
-            <tr>
-                <th>Codigo</th>
-                <th>Estado</th>
-                <th>Fecha de Entrega</th>
-                <th>Responsable</th>
-                <th>Prioridad</th>
-        
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($results as $result)
-                <tr>
-                    <td style="text-transform: capitalize; font-weight: bold;">{{ $result->nombre }}</td>
-                    <td>{{ $result->ponderacion }}%</td>
-                    <td>{{ $result->resultadoA }}%</td>
-                    <td>{{ $result->resultadoAs }}%</td>
-                    <td>{{ $result->resultadoNo }}%</td>
-                </tr>
-            @endforeach
-        </tbody>
-    </table>
+
+
+    @foreach ($criterios as $criterio)
+    <h1>{{ $criterio->Nombre }}</h1>
+    
+    @foreach ($requisitos as $r)
+        @if ($criterio->id == $r->criterio_id)
+            
+                @foreach ($pruebas as $p)
+                    @if ($p->requisito_id == $r->id)
+                        @if (!isset($tiposMostrados[$p->Tipo]))
+                            <h2>{{ $p->Tipo }}</h2>
+                            <?php $tiposMostrados[$p->Tipo] = true; ?>
+                        @endif
+                        <table border="1"  class="tabla-pdf">
+                        <thead>
+                            <tr>
+                                <th>Código</th>
+                                <th>Estado</th>
+                                <th>Prioridad</th>
+                                <th>Fecha de Entrega</th>
+                                <th>Usuario ID</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>{{ $p->codigo }}</td>
+                                <td>{{ $p->estado }}</td>
+                                <td>{{ $p->prioridad }}</td>
+                                <td>{{ $p->fechaEntrega }}</td>
+                                <td>{{ $p->usuario_id }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    @endif
+                @endforeach
+            
+        @endif
+    @endforeach
+@endforeach
+
+
 </div>
 
 </body>

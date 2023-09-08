@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Backlog;
+use App\Models\Criterios;
 use Illuminate\Http\Request;
 use App\Models\Proyectos;
 use App\Models\Pruebas;
@@ -66,17 +67,27 @@ class SeguimientoController extends Controller
             $pruebas = collect();  // Creamos una colecion para guardar las pruebas de este proyecto
             $id = decrypt($Id); // Obtener el id del proyecto
             $proyecto = Proyectos::findOrFail($id); // Buscamos el proyecto
+            $criterios = Criterios::where('proyecto_id', $id)->get(); // Consultos los criterios
+
             $results = DB::select('CALL obtener_progreso_del_proyecto(?)', [$proyecto->id]);// Lammamos el procedimiento almacenado que devuelve la proyecto el progreso por criterio
             $criteriosIds = collect($results)->pluck('id'); // Obtener los IDs de los criterios
+            $criterios = Criterios::whereIn('id', $criteriosIds)->get();
             $requisitos = RequisitosFuncionales::whereIn('criterio_id', $criteriosIds)->get(); // Obtener los requisitos relacionados
             foreach ($requisitos as $requisito) { // Iteramos por los requisitos funcionales para traer las pruebas
                 $pruebasPorRequisito = Pruebas::where('requisito_id', $requisito->id)
-                    ->select('id', 'codigo', 'estado', 'prioridad')
+                    
                     ->get();
                     $pruebas = $pruebas->concat($pruebasPorRequisito); // Concatenar las pruebas a la colección principal
             }
-            
-            $pdf = FacadePdf::loadView('reportes.pdf', ['proyecto' => $proyecto,'results' => $results, 'pruebas' => $pruebas]);
+           
+            $pdf = FacadePdf::loadView('reportes.pdf',
+            [
+                'proyecto' => $proyecto,
+                'results' => $results, 
+                'requisitos' => $requisitos,
+                'criterios' => $criterios,
+                'pruebas' => $pruebas
+            ]);
             return $pdf->stream('reporte.pdf');
         } catch (\Exception $e) {
 

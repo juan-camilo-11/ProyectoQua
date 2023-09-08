@@ -7,7 +7,7 @@
 <h6>{{$proyecto->nombre}}</h6>
 
 <a href="{{route('exportar',['id' => $proyecto->id])}}" class="btn btn-primary"><i class="bi bi-file-earmark-arrow-down"></i>Exportar en Excel</a>
-<a href="{{route('pdf',['id' => encrypt($proyecto->id)])}}" class="my-2 btn btn-primary">PDF</a>
+<a href="{{ route('pdf',['id' => encrypt($proyecto->id)])}}" class="my-2 btn btn-primary">PDF</a>
  
 <table class="table">
     <thead>

@@ -49,6 +49,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/pdf/{id}', [SeguimientoController::class, 'prueba'])->name('pdf');
     Route::get('/scrum', [SeguimientoController::class, 'scrum'])->name('scrum');
     Route::post('/daily/cambiar-estado', [DailyController::class, 'actualizarEstado'])->name('actualizarEstado');
+    Route::delete('/eliminarUsuario/{id}', [ProyectosController::class, 'destroyUser'])->name('eliminarUsuario');
+    Route::get('proyectos/show/{id}', [ProyectosController::class, 'edit'])->name('proyecto-edit');
 });
 
 Auth::routes();

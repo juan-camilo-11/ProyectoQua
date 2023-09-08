@@ -55,6 +55,12 @@ class PruebasController extends Controller
                     return $prueba->prioridad === $prioridad;
                 });
             }
+            if ($request->tipo !== null) {
+                $tipo = $request->tipo;
+                $pruebas = $pruebas->filter(function ($prueba) use ($tipo) {
+                    return $prueba->Tipo === $tipo;
+                });
+            }
             if ($request->fechaEntrega !== null) {
                 $fechaEntrega = $request->fechaEntrega;
                 $pruebas = $pruebas->filter(function ($prueba) use ($fechaEntrega) {
@@ -64,11 +70,11 @@ class PruebasController extends Controller
             if ($request->responsable !== null) {
                 $responsable = $request->responsable;
                 $pruebas = $pruebas->filter(function ($prueba) use ($responsable) {
-                   
+
                     return $prueba->usuario_id == $responsable;
                 });
             }
-            
+
 
 
             return view('pruebas.index', ['pruebas' => $pruebas, 'usuarios' => $usuarios, 'requisitos' => $requisitos]);
@@ -94,7 +100,7 @@ class PruebasController extends Controller
         try {
             $id = $request->id;
             $proyecto_p = Proyectos::where('id', $id)->with('criterios.requisitosFuncionales.pruebas')->first();
-        
+
 
             $pruebas =  $proyecto_p->criterios->flatMap(function ($criterio) {
                 return $criterio->requisitosFuncionales->flatMap(function ($requisito) {
@@ -102,10 +108,20 @@ class PruebasController extends Controller
                 });
             });
             foreach ($pruebas as $prueba) {
-                if($prueba->codigo == $request->codigo){
+                if ($prueba->codigo == $request->codigo) {
                     throw new \Exception("Codigo ya existente");
                 }
             }
+            // Validar el numero de pruebas para el usuario por dia
+
+            // Verifica cuántas pruebas existen para el responsable en la fecha dada.
+            $count = Pruebas::where('usuario_id', $request->usuario_id)
+            ->whereDate('fechaEntrega', $request->fechaEntrega)
+            ->count();
+            if ($count > 4){
+                throw new \Exception("Este usuario ya tiene 5 pruebas asignadas para esta fecha");
+            }
+
             // Validar informacion del formulario
             $request->validate([
                 'tipo' => 'required',
@@ -171,6 +187,7 @@ class PruebasController extends Controller
             $prueba = Pruebas::findOrFail($id);
             $prueba->descripcion = $request->descripcion;
             $prueba->pasos = $request->pasos;
+            $prueba->Tipo = $request->tipo;
             $prueba->resultadoEsperado = $request->resultadoEsperado;
             $prueba->prioridad = $request->prioridad;
             $prueba->fechaEntrega = $request->fechaEntrega;

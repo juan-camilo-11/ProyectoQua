@@ -146,6 +146,7 @@
                         <option value="baja">Baja</option>
                     </select>
                 </div>
+
                 <div class="col-md-3">
                     <label for="fechaEntrega" class="form-label">Fecha de Entrega</label>
                     <input type="date" class="form-control" id="fechaEntrega" name="fechaEntrega">
@@ -161,6 +162,15 @@
                         @endforeach
                     </select>
                 </div>
+                <div class="col-md-3">
+                    <label for="tipo" class="form-label">Tipo</label>
+                    <select class="form-control" id="tipo" name="tipo">
+                        <option value="">Seleccionar tipo</option>
+                        <option value="Unitaria">Unitaria</option>
+                        <option value="Integracion">Integracion</option>
+
+                    </select>
+                </div>
             </div>
             <div class="row">
                 <div class="col">
@@ -173,6 +183,7 @@
 
 
 </div>
+
 @foreach($requisitos as $requisito)
 @if(count($requisito->pruebas) == 0)
 @break
@@ -416,7 +427,9 @@
                 <div class="col">
                     <h3 class="card-title">Codigo: {{$prueba->codigo}}</h3>
                     @foreach($requisitos as $requisito)
-                    <p>Requisito: {{$prueba->requisito_id == $requisito->id ? $requisito->Nombre : ''}}</p>
+                    @if($prueba->requisito_id == $requisito->id)
+                    <p>Requisito: {{$requisito->Nombre}}</p>
+                    @endif
                     @endforeach
                 </div>
                 <div class="col">
@@ -424,8 +437,8 @@
                     @if($prueba->usuario_id == $usuario->id)
                     <p>Responsable: {{$usuario->nombre}}</p>
                     @endif
-                    <p>Tipo de prueba: {{$prueba->Tipo}}</p>
                     @endforeach
+                    <p>Tipo de prueba: {{$prueba->Tipo}}</p>
                 </div>
 
             </div>
@@ -481,6 +494,10 @@
                                 <form method="POST" action="{{route('pruebas.update', $prueba->id)}}">
                                     @method('PUT')
                                     @csrf
+                                    <div class="form-group" style="display: none;">
+                                        <label for="codigo">Código:</label>
+                                        <input type="text" class="form-control" id="codigo" name="codigo" value="{{$prueba->codigo}}" disabled>
+                                    </div>
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group">

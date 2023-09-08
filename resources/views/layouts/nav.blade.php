@@ -17,7 +17,7 @@
                 </li>
                 @can('users.index')
                 <li>
-                    <a href="" class="d-flex justify-content-center"><i class="bi bi-person-gear"></i><span>Usuarios</span></a>
+                    <a href="{{ route('usuarios.index') }}" class="d-flex justify-content-center"><i class="bi bi-person-gear"></i><span>Usuarios</span></a>
                 </li>
                 @endcan
             </ul>
