@@ -48,6 +48,11 @@ class ReqFuncionalesController extends Controller
     {
         //
         try {
+            // Validamos el estado del proyecto 
+            $proyecto = Proyectos::find($request->proyecto_id);
+                if ($proyecto->estado != 'Activo'){
+                    throw new \Exception("Este proyecto ya no esta disponible. Estado: ".$proyecto->estado);
+            }
             // Validar informacion del formulario
             $request->validate([
                 'nombre' => 'required|min:3',

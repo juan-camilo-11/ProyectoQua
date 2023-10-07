@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProyectosController;
 use App\Http\Controllers\CalendarioController;
 use App\Http\Controllers\CriteriosController;
+use App\Http\Controllers\CorreoController;
 use App\Http\Controllers\DailyController;
 use App\Http\Controllers\EvaluacionesController;
 use App\Http\Controllers\PruebasController;
@@ -51,6 +52,9 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/daily/cambiar-estado', [DailyController::class, 'actualizarEstado'])->name('actualizarEstado');
     Route::delete('/eliminarUsuario/{id}', [ProyectosController::class, 'destroyUser'])->name('eliminarUsuario');
     Route::get('proyectos/show/{id}', [ProyectosController::class, 'edit'])->name('proyecto-edit');
+    Route::get('/crear-correo', [CorreoController::class, 'mostrarFormulario'])->name('crear-correo');
+    Route::post('/enviar-correo', [CorreoController::class, 'enviarCorreo'])->name('enviar-correo');
+
 });
 
 Auth::routes();

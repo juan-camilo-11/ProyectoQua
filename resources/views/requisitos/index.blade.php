@@ -7,13 +7,13 @@
 
 <div class="row">
   <div class="col">
-    <h2 class="my-5">Requisitos Funcionales</h2>
+    <h2 class="my-5">Requisitos</h2>
   </div>
   <!-- Botón de agregar requisito funcional -->
   <div class="col d-flex align-items-center justify-content-end">
     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-registrar-requisito">
       <i class="bi bi-plus"></i>
-      Agregar Requisito funcional
+      Agregar Requisito
     </button>
   </div>
   <!-- Modal para agregar requisito funcional -->
@@ -21,7 +21,7 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="modal-registrar-requisito-titulo">Registrar Requisito Funcional</h5>
+          <h5 class="modal-title" id="modal-registrar-requisito-titulo">Registrar Requisito</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 
           </button>
@@ -29,6 +29,10 @@
         <div class="modal-body">
           <form method="POST" action="{{route('requisitos.store')}}">
             @csrf
+            <div style="display: none;">
+              <input type="number" name="proyecto_id" value="{{decrypt($_REQUEST['proyecto'])}}" >
+            </div>
+            
             <div class="form-group">
               <label for="nombre">Nombre:</label>
               <input type="text" name="nombre" id="nombre" class="form-control">

@@ -45,6 +45,12 @@ class CriteriosController extends Controller
             try {
                 $proyecto_id = decrypt($request->proyecto_id); // Desciframos el id del proyecto
 
+                // Validamos el estado del proyecto
+                $proyecto = Proyectos::find($proyecto_id);
+                if ($proyecto->estado != 'Activo'){
+                    throw new \Exception("Este proyecto ya no esta disponible. Estado: ".$proyecto->estado);
+                }
+
 
                 $requestData = $request->except(['_token', 'proyecto_id']);
                 // Validamos al menos una seleccion

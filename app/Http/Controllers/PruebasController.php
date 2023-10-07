@@ -98,6 +98,11 @@ class PruebasController extends Controller
     {
         // 
         try {
+            // Validamos el estado del proyecto 
+            $proyecto = Proyectos::find($request->id);
+            if ($proyecto->estado != 'Activo'){
+                    throw new \Exception("Este proyecto ya no esta disponible. Estado: ".$proyecto->estado);
+            }
             $id = $request->id;
             $proyecto_p = Proyectos::where('id', $id)->with('criterios.requisitosFuncionales.pruebas')->first();
 

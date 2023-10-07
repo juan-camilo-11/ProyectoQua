@@ -78,6 +78,11 @@ class ProyectosController extends Controller
     {
         DB::beginTransaction(); // Iniciar la transacción a la base de datos
         try {
+            // Validamos el estado del proyecto 
+            $proyecto = Proyectos::find($request->proyecto_id);
+                if ($proyecto->estado != 'Activo'){
+                    throw new \Exception("Este proyecto ya no esta disponible. Estado: ".$proyecto->estado);
+            }
             // Validar informacion del formulario
             $request->validate([
                 'correo' => 'required|min:3|email|exists:users,email',
@@ -89,7 +94,7 @@ class ProyectosController extends Controller
             $usuario_id = $usuario->id;
 
             // Obtener proyecto
-            $proyecto = Proyectos::findOrFail($request->proyecto_id);
+            //$proyecto = Proyectos::findOrFail($request->proyecto_id);
 
             // validar regla de negocio, no se puede estar en mas de tres proyectos activos al mismo tiempo
             $proyecto_tiene_usuarios = proyectos_tienen_usuarios::where('usuario_id', $usuario_id)->get();

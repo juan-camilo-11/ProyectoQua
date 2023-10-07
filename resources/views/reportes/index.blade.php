@@ -5,9 +5,12 @@
 
 <h2>Reportes</h2>
 <h6>{{$proyecto->nombre}}</h6>
+</br>
 
-<a href="{{route('exportar',['id' => $proyecto->id])}}" class="btn btn-primary"><i class="bi bi-file-earmark-arrow-down"></i>Exportar en Excel</a>
-<a href="{{ route('pdf',['id' => encrypt($proyecto->id)])}}" class="my-2 btn btn-primary">PDF</a>
+
+<h6>Generar reporte</h6>
+<a href="{{route('exportar',['id' => $proyecto->id])}}" class="btn btn-primary"><i class="bi bi-file-earmark-spreadsheet"></i> Excel</a>
+<a href="{{ route('pdf',['id' => encrypt($proyecto->id)])}}" class="my-2 btn btn-primary"><i class="bi bi-filetype-pdf"></i> PDF</a>
  
 <table class="table">
     <thead>

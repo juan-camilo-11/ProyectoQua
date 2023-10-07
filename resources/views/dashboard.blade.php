@@ -67,7 +67,7 @@
         {{ $proyectos->links() }}
     </div>
     <div class="col">
-        <a href="{{route('calendario.index')}}">Calendario</a>
+        <a href="{{route('calendario.index')}}" class="btn btn-outline-primary">Calendario</a>
     </div>
 </div>
 @endsection

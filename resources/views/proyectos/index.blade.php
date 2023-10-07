@@ -70,7 +70,7 @@
         @foreach ($proyectos as $proyecto)
         <tr>
             <td><a href="{{route('proyectos.show', $proyecto->id)}}" class="proyecto-nombre">{{$proyecto->nombre}}</a></td>
-            <td class="estado {{ $proyecto->estado == 'Activo' ? 'activo' : 'cerrado' }}"><span>{{$proyecto->estado}}</span></td>
+            <td class="estado {{ $proyecto->estado == 'Activo' ? 'activo' : ($proyecto->estado == 'Inactivo' ? 'inactivo' : 'finalizado') }}"><span>{{$proyecto->estado}}</span></td>
             <td>{{$proyecto->fechaFin}}</td>
             <td>{{$proyecto->usuarios->first()->cargo_id  }}</td>
         </tr>

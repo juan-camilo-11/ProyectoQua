@@ -9,7 +9,7 @@
     --color-rojo: #e74c3c;
     --color-amarillo-claro: #EDFF54 ;
 }
-p,h1,h2,h3,h4,h5,h6,td{
+h1,h2,h3,h4,h5,h6,td{
     text-transform: capitalize;
    
 }
@@ -400,8 +400,14 @@ p,h1,h2,h3,h4,h5,h6,td{
     border-radius: 1rem;
 }
 
-.estado.cerrado span{
+.estado.inactivo span{
     background-color: var(--color-rojo);
+    padding: .3rem 1rem;
+    border-radius: 1rem;
+}
+
+.estado.finalizado span{
+    background-color: var(--color-azul);
     padding: .3rem 1rem;
     border-radius: 1rem;
 }

@@ -13,10 +13,19 @@ class UsuariosController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         //
-        $usuarios = User::all();
+        $usuarios = User::paginate(10);
+        //Filtro
+        if($request->atributo != null){
+            $artributo = strtolower($request->atributo);
+            $usuarios = User::where(function ($query) use ($artributo) {
+                $query->whereRaw('LOWER(nombre) like ?', ["%$artributo%"])
+                    ->orWhereRaw('LOWER(apellido) like ?', ["%$artributo%"])
+                    ->orWhereRaw('LOWER(email) like ?', ["%$artributo%"]);
+            })->paginate(10);
+        }
         return view('usuarios.index', [
             'usuarios' => $usuarios
         ]);

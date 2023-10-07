@@ -90,8 +90,7 @@ class SeguimientoController extends Controller
             ]);
             return $pdf->stream('reporte.pdf');
         } catch (\Exception $e) {
-
-            return redirect()->route('proyectos.show', $id);
+            return redirect()->route('proyectos.show', $id)->with('error', 'Error al intentar descaragr PDF ' . $e->getMessage());
         }
         
         
